@@ -62,6 +62,7 @@ Route::middleware([AuthenticateMiddleware::class])->group(function () {
   Route::post('/auth/save-job',[JobController::class,'saveJob'])->name('account.saveJob');
   Route::get('/auth/my-jobs',[JobController::class,'myJobs'])->name('account.myJobs');
   Route::get('/auth/my-jobs/edit/{jobId}',[JobController::class,'editJob'])->name('account.editJob');
+  Route::get('/auth/my-jobs/view/{jobId}',[JobController::class,'viewJob'])->name('account.viewJob');
   Route::post('/auth/update-job/{jobId}',[JobController::class,'updateJob'])->name('account.updateJob');
   Route::post('/auth/delete-job',[JobController::class,'deleteJob'])->name('account.deleteJob');
   Route::get('/auth/applied-job',[JobController::class,'myAppliedJobs'])->name('account.myAppliedJobs');

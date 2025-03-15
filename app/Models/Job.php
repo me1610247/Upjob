@@ -7,6 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Job extends Model
 {
+    protected $fillable = [
+        'title',
+        'vacancy',
+        'salary',
+        'category_id',
+        'job_type_id',
+        'location',
+        'description',
+        'keywords',
+        'company_name',
+        'image',
+        'residential_type',
+        'bathrooms'
+];
+
     use HasFactory;
     public function jobType(){
         return $this->belongsTo(JobType::class);

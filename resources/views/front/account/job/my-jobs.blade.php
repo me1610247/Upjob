@@ -23,10 +23,10 @@
                     <div class="card-body card-form">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h3 class="fs-4 mb-1">My Jobs</h3>
+                                <h3 class="fs-4 mb-1">Your Properties</h3>
                             </div>
                             <div style="margin-top: -10px;">
-                                <a href="{{route('account.createJob')}}" class="btn btn-primary">Post a Job</a>
+                                <a href="{{route('account.createJob')}}" class="btn btn-primary">Post a Property</a>
                             </div>
                             
                         </div>
@@ -35,8 +35,8 @@
                                 <thead class="bg-light">
                                     <tr>
                                         <th scope="col">Title</th>
+                                        <th scope="col">Image</th>
                                         <th scope="col">Job Created</th>
-                                        <th scope="col">Applicants</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Action</th>
                                     </tr>
@@ -46,11 +46,22 @@
                                     @foreach ($jobs as $job)
                                     <tr class="active">
                                         <td>
-                                            <div class="job-name fw-500">{{$job->title}}</div>
-                                            <div class="info1">{{$job->jobType->name}} . {{$job->location}}</div>
+                                            <div class="job-name fw-bold text-success fs-5">{{ $job->title }}</div>
+                                            <div class="text-muted mt-1">
+                                                <span class="fw-semibold">Type:</span> {{ $job->jobType->name }} |
+                                                <span class="fw-semibold">Category:</span> {{ $job->category->name }} |
+                                                <span class="fw-semibold">Location:</span> {{ $job->location }}
+                                            </div>
                                         </td>
+                                        
+                                        <td>
+                                            @if($job->image)
+                                            <img src="{{ asset('storage/' . $job->image) }}" alt="Job Image" class="mt-2" width="20" style="border-radius: 20px; width: 200px !important;">
+                                            @endif
+                                        </td>                                        
+                                        
                                         <td>{{\Carbon\Carbon::parse($job->created_at)->format('d M, Y')}}</td>
-                                        <td>130 Applications</td>
+                                       
                                         <td>
                                             @if($job->status == 1)
                                             <div class="job-status text-capitalize">Active</div>
@@ -64,7 +75,7 @@
                                                     <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                                 </a>
                                                 <ul class="dropdown-menu dropdown-menu-end">
-                                                    <li><a class="dropdown-item" href="job-detail.html"> <i class="fa fa-eye" aria-hidden="true"></i> View</a></li>
+                                                    <li><a class="dropdown-item" href="{{route('account.viewJob',$job->id)}}"> <i class="fa fa-eye" aria-hidden="true"></i> View</a></li>
                                                     <li><a class="dropdown-item" href="{{route('account.editJob',$job->id)}}"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a></li>
                                                     <li><a class="dropdown-item" onclick="deleteJob({{$job->id}})" href="#"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a></li>
                                                 </ul>
@@ -73,7 +84,7 @@
                                     </tr>
                                     @endforeach
                                     @else
-                                    <h2 class="text-center">No Jobs Posted Yet</h2>
+                                    <h2 class="text-center">No Properties Posted Yet</h2>
                                     @endif
                                 </tbody>
                                 

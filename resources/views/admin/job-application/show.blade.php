@@ -16,7 +16,6 @@
         
         <!-- Three Cards Side by Side -->
         <div class="row">
-            <!-- First Card -->
             <div class="col-md-4 mb-4">
                 <div class="card stat-card shadow-sm">
                     <div class="card-body">
@@ -28,7 +27,6 @@
                 </div>
             </div>
             
-            <!-- Second Card -->
             <div class="col-md-4 mb-4">
                 <div class="card stat-card shadow-sm">
                     <div class="card-body">
@@ -40,7 +38,6 @@
                 </div>
             </div>
             
-            <!-- Third Card -->
             <div class="col-md-4 mb-4">
                 <div class="card stat-card shadow-sm">
                     <div class="card-body">
@@ -51,13 +48,14 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-        <!-- User Management Table -->
+        <!-- Job Applications Table -->
         <div class="row">
             <div class="col-lg-12">
                 <div class="card border-0 shadow mb-4">
                     <div class="card-body">
-                        <h4 class="card-title">Job Application</h4>
+                        <h4 class="card-title">Job Applications</h4>
                         @include('front.layouts.message')
                         <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button> 
                         @if($applications->isNotEmpty())
@@ -77,28 +75,28 @@
                                 @foreach($applications as $application)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>
-                                            <p>{{ $application->job->title }}</p>
-                                            {{-- <p>Applicants : {{$job->applications->count()}}</p> --}}
-                                        </td>
+                                        <td>{{ $application->job->title }}</td>
                                         <td>{{ $application->employer->name }}</td>
                                         <td>{{ $application->user->name }}</td>
-                                        <td>{{\Carbon\Carbon::parse($application->applied_at)->format('d M, Y')}}</td>
+                                        <td>{{ \Carbon\Carbon::parse($application->applied_at)->format('d M, Y') }}</td>
                                         <td>
                                             @if($application->resume)
-                                                <!-- Link to download or view the resume -->
-                                                {{-- php artisan storage:link must be run in the terminal first  --}}
                                                 <a href="{{ asset('storage/' . $application->resume) }}" target="_blank" class="btn btn-sm btn-outline-success">View Resume</a>
-                                                @else
+                                            @else
                                                 <span class="text-muted">No resume uploaded</span>
                                             @endif
-                                        </td>                                        <td>
+                                        </td>
+                                        <td>
                                             <div class="action-dots float-end">
                                                 <a href="#" class="" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                                 </a>
                                                 <ul class="dropdown-menu dropdown-menu-end">
-                                                    <li><a class="dropdown-item" onclick="deleteJobApplication({{ $application->id }})" href="#"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a></li>
+                                                    <li>
+                                                        <a class="dropdown-item text-danger" href="#" onclick="deleteJobApplication({{ $application->id }})">
+                                                            <i class="fa fa-trash" aria-hidden="true"></i> Delete
+                                                        </a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </td>
@@ -107,7 +105,7 @@
                             </tbody>
                         </table>
                         @else
-                        <p class="text-center mt-4">No users yet.</p>
+                        <p class="text-center mt-4">No job applications yet.</p>
                         @endif
                     </div>
                 </div>              
@@ -117,8 +115,7 @@
     </div>
 </section>
 
-<!-- Modal for deleting user -->
-<!-- Modal for deleting user -->
+<!-- Delete Modal -->
 <div class="modal fade" id="deleteJobApplicationModal" tabindex="-1" role="dialog" aria-labelledby="deleteJobApplicationModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -130,9 +127,8 @@
                 Are you sure you want to delete this job application?
             </div>
             <div class="modal-footer">
-                <!-- Cancel Button -->
-                <button type="button" class="btn btn-secondary" onclick="hideModal()">Cancel</button>
-                <form id="deleteForm" action="{{route('admin.applications.destroy', $application->id)}}" method="POST">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Delete</button>
@@ -142,6 +138,15 @@
     </div>
 </div>
 
+<!-- JavaScript for Deletion -->
+<script>
+    function deleteJobApplication(applicationId) {
+        let deleteForm = document.getElementById('deleteForm');
+        deleteForm.action = `{{ url('admin/applications') }}/${applicationId}`;
+        let modal = new bootstrap.Modal(document.getElementById('deleteJobApplicationModal'));
+        modal.show();
+    }
+</script>
 
 @endsection
 

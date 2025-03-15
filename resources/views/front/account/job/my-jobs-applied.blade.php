@@ -23,57 +23,67 @@
                     <div class="card-body card-form">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h3 class="fs-4 mb-1">Applied Jobs</h3>
+                                <h3 class="fs-4 mb-1">Applied Properties</h3>
                             </div>
                             
                         </div>
                         <div class="table-responsive">
-                            <table class="table ">
+                            <table class="table table-hover">
                                 <thead class="bg-light">
                                     <tr>
+                                        <th scope="col">Image</th> <!-- New column for property image -->
                                         <th scope="col">Title</th>
-                                        <th scope="col">Category</th>
-                                        <th scope="col">Salary</th>
-                                        <th scope="col">Applied Date</th>
+                                        <th scope="col">Price</th>
                                         <th scope="col">Applicants</th>
-                                        <th scope="col">Status</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="border-0">
                                     @if($jobsApplications->isNotEmpty())
-                                    @foreach ($jobsApplications as $jobsApplication)
-                                    <tr class="active">
-                                        <td>
-                                            <div class="job-name fw-500">{{$jobsApplication->job->title}}</div>
-                                            <div class="info1">{{$jobsApplication->job->jobType->name}} . {{$jobsApplication->job->location}}</div>
-                                        </td>
-                                        <td>
-                                            <div class="info1">{{$jobsApplication->job->category->name}}</div>
-                                        </td>
-                                        <td>
-                                            <div class="info1">{{$jobsApplication->job->salary}}</div>
-                                        </td>
-                                        <td>{{\Carbon\Carbon::parse($jobsApplication->applied_date)->format('d M, Y')}}</td>
-                                        <td>{{$jobsApplication->job->applications->count()}} Applications</td>
-                                        <td>
-                                            @if($jobsApplication->job->status == 1)
-                                            <div class="job-status text-capitalize">Active</div>
-                                            @else
-                                            <div class="job-status text-capitalize">Complete</div>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-primary" href="{{route('details',$jobsApplication->job_id)}}"><i class="fa fa-eye" aria-hidden="true"></i> View</a>
-
-                                        </td>
-                                    </tr>
-                                    @endforeach
+                                        @foreach ($jobsApplications as $jobsApplication)
+                                            <tr>
+                                                <!-- Property Image -->
+                                                <td>
+                                                    @if($jobsApplication->job->image)
+                                                        <img src="{{ asset('storage/' . $jobsApplication->job->image) }}" alt="Property Image" class="img-fluid rounded" style="width: 120px; height: 100px; object-fit: cover;">
+                                                    @else
+                                                        <img src="{{ asset('assets/images/default-property.jpg') }}" alt="Default Property Image" class="img-fluid rounded" style="width: 80px; height: 60px; object-fit: cover;">
+                                                    @endif
+                                                </td>
+                        
+                                                <!-- Title and Location -->
+                                                <td>
+                                                    <div class="job-name fw-500">{{ $jobsApplication->job->title }}</div>
+                                                    <div class="text-muted small">{{ $jobsApplication->job->jobType->name }} · {{ $jobsApplication->job->location }}</div>
+                                                </td>
+                    
+                                                <!-- Price -->
+                                                <td>
+                                                    <div class="fw-500">${{ number_format($jobsApplication->job->salary) }}</div>
+                                                </td>
+                        
+                        
+                                                <!-- Applicants -->
+                                                <td>
+                                                    <div class="text-muted small">{{ $jobsApplication->job->applications->count() }} Applications</div>
+                                                </td>
+                        
+                                                <!-- Action -->
+                                                <td>
+                                                    <a class="btn btn-sm btn-primary" href="{{ route('details', $jobsApplication->job_id) }}">
+                                                        <i class="fa fa-eye" aria-hidden="true"></i> View
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     @else
-                                    <h2 class="text-center">No Jobs Posted Yet</h2>
+                                        <tr>
+                                            <td colspan="8" class="text-center py-4">
+                                                <h4 class="text-muted">No Applied Properties Yet</h4>
+                                            </td>
+                                        </tr>
                                     @endif
                                 </tbody>
-                                
                             </table>
                         </div>
                         <div>
