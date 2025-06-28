@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\JobApplicationController;
 use App\Http\Controllers\ForgetPassword;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\JobHomeController;
+use App\Http\Controllers\StatisticsController;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\AuthenticateMiddleware;
 use App\Http\Middleware\CheckAdmin;
@@ -19,10 +20,15 @@ use App\Http\Middleware\CheckAdmin;
 //});
 
 Route::get('/',[HomeController::class,'index'])->name('home');
+Route::get('/',[HomeController::class,'index'])->name('home');
 Route::get('/jobs',[JobHomeController::class,'index'])->name('jobs');
 Route::get('/jobs/details/{id}',[JobController::class,'details'])->name('details');
 Route::post('/apply-job', [JobController::class, 'applyJob'])->name('applyJob');
 Route::post('/save-job',[JobController::class,'favJob'])->name('favJob');
+
+
+Route::post('/properties/by-area', [JobController::class, 'getByArea'])->name('properties.byArea');
+Route::get('/properties/nearby', [JobController::class, 'showNearbyProperties'])->name('properties.nearby');
 
 // RedirectIfAuthenticated middleware that prevent redirect to login or register after logged in
 
@@ -50,6 +56,8 @@ Route::middleware([CheckAdmin::class])->group(function () {
   Route::delete('/admin/jobs/{id}', [JobAdminController::class, 'destroy'])->name('admin.jobs.destroy');
   Route::get('/admin/job-applications', [JobApplicationController::class, 'index'])->name('admin.applications');
   Route::delete('/admin/jobs-applications/{id}', [JobApplicationController::class, 'destroy'])->name('admin.applications.destroy');
+  Route::post('/admin/jobs/import', [JobAdminController::class, 'import'])->name('admin.jobs.import');
+  Route::get('/admin/charts', [StatisticsController::class, 'index'])->name('charts.view');
 
 });
 Route::middleware([AuthenticateMiddleware::class])->group(function () {

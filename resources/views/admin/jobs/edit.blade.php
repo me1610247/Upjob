@@ -3,6 +3,7 @@
 @section('main')
 <section class="section-5 bg-2 py-5">
     <div class="container">
+        @include('front.layouts.message')
         <div class="row">
             <div class="col">
                 <nav aria-label="breadcrumb" class="rounded-3 p-3 mb-4">
@@ -33,8 +34,8 @@
                 <div class="card stat-card shadow-sm">
                     <div class="card-body">
                         <i class="fas fa-briefcase fa-2x text-primary mb-3"></i>
-                        <h5 class="card-title">Manage Jobs</h5>
-                        <p class="card-text">Manage job postings and vacancies.</p>
+                        <h5 class="card-title">Manage Properties</h5>
+                        <p class="card-text">Manage Property postings and vacancies.</p>
                         <a href="{{route('admin.jobs')}}" class="btn btn-primary btn-sm">Go to Jobs</a>
                     </div>
                 </div>
@@ -53,12 +54,11 @@
             </div>
         </div>
 
-        <!-- User Management Table -->
         <div class="row">
             <div class="col-lg-12">
                 <div class="card border-0 shadow mb-4">
                     <div class="card-body">
-                        <h4 class="card-title">Jobs Management</h4>
+                        <h4 class="card-title">Properties Management</h4>
                         @include('front.layouts.message')
                         <form action="{{ route('admin.jobs.update', $job->id) }}" method="POST" id="editJobForm" name="editJobForm">
                             @csrf
@@ -221,59 +221,3 @@
 
 @endsection
 
-@section('customJs')
-<script type="text/javascript">
-   $("#editJobForm").submit(function(e) {
-        e.preventDefault();
-
-        $.ajax({
-            url: '{{ route("admin.jobs.update",$job->id) }}',
-            type: 'put',
-            data: $("#editJobForm").serializeArray(),
-            dataType: 'json',
-            success: function(response){
-    // Reset all fields to remove error classes and messages
-    $(".form-control").removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html('');
-    if (response.status == false) {
-        var errors = response.errors;
-        
-        // Check and show errors
-        if (errors.title) {
-            $("#title").addClass('is-invalid')
-                .siblings('p')
-                .addClass('invalid-feedback')
-                .html(errors.title);
-        }
-        
-        if (errors.location) {
-            $("#location").addClass('is-invalid')
-                .siblings('p')
-                .addClass('invalid-feedback')
-                .html(errors.location);
-        }
-
-        if (errors.company_name) {
-            $("#company_name").addClass('is-invalid')
-                .siblings('p')
-                .addClass('invalid-feedback')
-                .html(errors.company_name);
-        }
-        if (errors.keywords) {
-            $("#keywords").addClass('is-invalid')
-                .siblings('p')
-                .addClass('invalid-feedback')
-                .html(errors.keywords);
-        }
-    } else {
-        // If the update is successful, redirect
-        window.location.href = response.redirect_url;
-    }
-}
-
-        });
-    })
-
-
-
-</script>
-@endsection

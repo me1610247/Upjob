@@ -8,7 +8,8 @@ use App\Models\Job;
 use App\Models\Category;
 use App\Models\JobType;
 use Illuminate\Support\Facades\Validator; 
-
+use App\Imports\JobsImport;
+use Maatwebsite\Excel\Facades\Excel;
 class JobController extends Controller
 {
     public function index(){
@@ -67,15 +68,11 @@ class JobController extends Controller
             $job->save();
     
             session()->flash('success','Job Updated Successfully');
-            return response()->json([
-            'status' => true,
-            'redirect_url' => route('admin.jobs'),
-        ]);
+         return redirect()->route('admin.jobs')->with('success', 'Property Updated Successfully');
+
         } else {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors(),
-            ]);
+            return redirect()->back()->withErrors($validator)->withInput();
+
         }
     }
     public function destroy(Request $request){
@@ -97,5 +94,14 @@ class JobController extends Controller
         return redirect()->to('admin.jobs');
 
     }
-    
+    public function import(Request $request)
+{
+    $request->validate([
+        'excel_file' => 'required|file|mimes:xlsx,xls',
+    ]);
+
+    Excel::import(new JobsImport, $request->file('excel_file'));
+
+    return back()->with('success', 'Properties imported successfully!');
+}
 }

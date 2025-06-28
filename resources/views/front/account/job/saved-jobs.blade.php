@@ -73,7 +73,7 @@
                                     </tr>
                                     @endforeach
                                     @else
-                                    <h2 class="text-center">No Jobs Posted Yet</h2>
+                                    <h2 class="text-center">No Properties Posted Yet</h2>
                                     @endif
                                 </tbody>
                                 

@@ -53,70 +53,82 @@
             </div>
         </div>
 
-        <!-- User Management Table -->
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card border-0 shadow mb-4">
-                    <div class="card-body">
-                        <h4 class="card-title">Job Management</h4>
-                        @include('front.layouts.message')
-                        <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button> 
-                        @if($jobs->isNotEmpty())
-                        <table class="table table-striped table-hover mt-4">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>#</th>
-                                    <th>Title</th>
-                                    <th>Created By</th>
-                                    <th>Created at</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($jobs as $job)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>
-                                            <p>{{ $job->title }}</p>
-                                            <p>Applicants : {{$job->applications->count()}}</p>
-                                        </td>
-                                        <td>{{ $job->user->name }}</td>
-                                        <td>{{\Carbon\Carbon::parse($job->created_at)->format('d M, Y')}}</td>
-                                        <td>
-                                        @if($job->status == 1)
-                                        <span class="text-success">Active</span>
-                                        @else
-                                        <span class="text-danger">Not Active</span>
-                                        @endif
-                                        </td>
-                                        <td>
-                                            <div class="action-dots float-end">
-                                                <a href="#" class="" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-end">
-                                                    <li><a class="dropdown-item" href="{{ route('admin.jobs.edit', $job->id) }}"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a></li>
-                                                    <li><a class="dropdown-item" onclick="deleteJob({{ $job->id }})" href="#"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a></li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        @else
-                        <p class="text-center mt-4">No users yet.</p>
-                        @endif
-                    </div>
-                </div>              
+     <!-- Property Management Table -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card border-0 shadow mb-4">
+            <div class="card-body">
+                <h4 class="card-title">Property Management</h4>
+                @include('front.layouts.message')
+                <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button> 
+                @if($jobs->isNotEmpty())
+                <table id="jobsTable" class="table table-striped table-hover mt-4">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Created By</th>
+                            <th>Created at</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($jobs as $job)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>
+                                    <p>{{ $job->title }}</p>
+                                    <p>Applicants : {{$job->applications->count()}}</p>
+                                </td>
+                                <td>{{ $job->user->name }}</td>
+                                <td>{{\Carbon\Carbon::parse($job->created_at)->format('d M, Y')}}</td>
+                                <td>
+                                @if($job->status == 1)
+                                <span class="text-success">Active</span>
+                                @else
+                                <span class="text-danger">Not Active</span>
+                                @endif
+                                </td>
+                                <td>
+                                    <div class="action-dots float-end">
+                                        <a href="#" class="" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="{{ route('admin.jobs.edit', $job->id) }}"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a></li>
+                                            <li><a class="dropdown-item" onclick="deleteJob({{ $job->id }})" href="#"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                @else
+                <p class="text-center mt-4">No users yet.</p>
+                @endif
             </div>
-            {{ $jobs->links('vendor.pagination.bootstrap-5') }}
-        </div>
+        </div>              
+    </div>
+    <!-- يمكنك إزالة pagination لأن DataTable سيتولى ذلك -->
+    <!-- {{ $jobs->links('vendor.pagination.bootstrap-5') }} -->
+</div>
     </div>
 </section>
-
-<!-- Modal for deleting user -->
+<script>
+    $(document).ready(function() {
+        $('#jobsTable').DataTable({
+            "language": {
+                "search": "_INPUT_",
+                "searchPlaceholder": "Search...",
+            },
+            "columnDefs": [
+                { "orderable": false, "targets": [5] } // جعل عمود Actions غير قابل للترتيب
+            ]
+        });
+    });
+    </script>
 <!-- Modal for deleting user -->
 <div class="modal fade" id="deleteJobModal" tabindex="-1" role="dialog" aria-labelledby="deleteJobModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

@@ -23,11 +23,37 @@
             @include('front.layouts.message')
             <div class="col-md-8">
                 <div class="card shadow border-0">
+                    @php
+                    $staticImages = [
+                        'assets/properties/prop1 (1).jpg',
+                        'assets/properties/prop1 (2).jpg',
+                        'assets/properties/prop1 (3).jpg',
+                        'assets/properties/prop1 (4).jpg',
+                        'assets/properties/prop1 (5).jpg',
+                        'assets/properties/prop1 (6).jpg',
+                        'assets/properties/prop1 (7).jpg',
+                        'assets/properties/prop1 (8).jpg',
+                        'assets/properties/prop1 (9).jpg',
+                        'assets/properties/prop1 (10).jpg',
+                        'assets/properties/prop1 (11).jpg',
+                        'assets/properties/prop1 (12).jpg',
+                        'assets/properties/prop1 (13).jpg',
+                        'assets/properties/prop1 (14).jpg',
+                        'assets/properties/prop1 (15).jpg',
+                        'assets/properties/prop1 (16).jpg',
+                        'assets/properties/prop1 (17).jpg',
+                        'assets/properties/prop1 (18).jpg',
+                    ];
+                    $randomImage = $staticImages[array_rand($staticImages)];
+                @endphp
                     <!-- Job Image -->
                     @if($job->image)
                     <div class="text-center"> <!-- Center the image horizontally -->
-                        <img src="{{ asset('storage/' . $job->image) }}" alt="Job Image" class="card-img-top" style="border-radius: 10px 10px 0 0; width: 400px; object-fit: cover;">
-                    </div>                    
+                        <img src="{{ asset($randomImage) }}" class="card-img-top" style="border-radius: 10px 10px 0 0; width: 400px; object-fit: cover;">
+                    </div>   
+                    @else
+                    <img src="{{ asset($randomImage) }}" class="card-img-top" alt="Static Property Image" style="height: 200px; object-fit: cover;">
+
                     @endif
 
                     <div class="job_details_header bg-white p-4">
@@ -96,7 +122,7 @@
                         <div class="d-flex justify-content-end gap-3">
                             <a href="#" onclick="favJob({{ $job->id }})" class="btn btn-outline-dark">Favourite</a>
                             @if(Auth::check())
-                                <a onclick="applyJob({{ $job->id }})" class="btn btn-primary">Apply</a>
+                                <a onclick="applyJob({{ $job->id }})" class="btn btn-primary">Book Now</a>
                             @endif
                         </div>
                     </div>
@@ -109,10 +135,8 @@
                         <h3 class="fw-bold mb-4">Property Summary</h3>
                         <ul class="list-unstyled text-muted">
                             <li class="mb-3"><strong>Published on:</strong> <span>{{ \Carbon\Carbon::parse($job->created_at)->format('d M Y') }}</span></li>
-                            @if($job->vacancy)
-                            <li class="mb-3"><strong>No. of Rooms:</strong> <span>{{ $job->vacancy }}</span></li>
-                            @endif                           
                             @if($job->bathrooms)
+                            <li class="mb-3"><strong>No. of Rooms:</strong> <span>{{ $job->vacancy }}</span></li>
                             <li class="mb-3"><strong>No. of Bathrooms:</strong> <span>{{ $job->bathrooms }}</span></li>
                             @endif                           
                          <li class="mb-3"><strong>Salary:</strong> <span>{{ number_format($job->salary) }} EGP</span></li>

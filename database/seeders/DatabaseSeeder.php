@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Job;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,7 +22,8 @@ class DatabaseSeeder extends Seeder
         //]);
          // \App\Models\Category::factory(5)->create();
          // \App\Models\JobType::factory(5)->create();
-          \App\Models\User::factory(10)->create();
+          // \App\Models\User::factory(10)->create();
+          Job::factory()->count(25)->create();
 
 
     }

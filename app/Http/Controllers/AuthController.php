@@ -19,23 +19,36 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:4',
-            'email' => 'required|email|unique:users,email', 
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
             'confirm_password' => 'required|same:password',
         ]);
-
+    
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'errors' => $validator->errors()
+                ]);
+            } else {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
         }
-
+    
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->save();
-
-        session()->flash('success', 'You have registered successfully');
-        return redirect()->route('account.login'); // Redirect to login page
+    
+        if ($request->ajax()) {
+            return response()->json([
+                'status' => true,
+            ]);
+        } else {
+            session()->flash('success', 'You have registered successfully');
+            return redirect()->route('account.login');
+        }
     }
 
     public function login()

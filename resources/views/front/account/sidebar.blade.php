@@ -81,7 +81,7 @@
             <!-- Property Purchased -->
             <li class="list-group-item d-flex justify-content-between align-items-center p-3 hover-effect">
                 <a href="{{ route('account.myAppliedJobs') }}" class="text-decoration-none text-dark">
-                    <i class="fas fa-shopping-cart me-2"></i>Property Purchased
+                    <i class="fas fa-shopping-cart me-2"></i>Property Booked
                 </a>
             </li>
 

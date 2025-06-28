@@ -25,10 +25,11 @@
                             <div>
                                 <h3 class="fs-4 mb-1">Your Properties</h3>
                             </div>
+                            @if(Auth::user()->role === 'admin')
                             <div style="margin-top: -10px;">
                                 <a href="{{route('account.createJob')}}" class="btn btn-primary">Post a Property</a>
                             </div>
-                            
+                            @endif
                         </div>
                         <div class="table-responsive">
                             <table class="table ">

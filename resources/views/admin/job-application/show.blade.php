@@ -8,7 +8,7 @@
                 <nav aria-label="breadcrumb" class="rounded-3 p-3 mb-4">
                     <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Manage Jobs</li>
+                        <li class="breadcrumb-item active">Manage property</li>
                     </ol>
                 </nav>
             </div>
@@ -42,9 +42,9 @@
                 <div class="card stat-card shadow-sm">
                     <div class="card-body">
                         <i class="fas fa-briefcase fa-2x text-secondary mb-3"></i>
-                        <h5 class="card-title">Manage Jobs</h5>
-                        <p class="card-text">View and edit jobs listed on the platform.</p>
-                        <a href="{{route('admin.jobs')}}" class="btn btn-light bg-dark text-light btn-sm">Go to Jobs</a>
+                        <h5 class="card-title">Manage Property</h5>
+                        <p class="card-text">View and edit Properties listed on the platform.</p>
+                        <a href="{{route('admin.jobs')}}" class="btn btn-light bg-dark text-light btn-sm">Go to Property</a>
                     </div>
                 </div>
             </div>

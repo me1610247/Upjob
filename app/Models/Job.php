@@ -7,19 +7,27 @@ use Illuminate\Database\Eloquent\Model;
 
 class Job extends Model
 {
-    protected $fillable = [
-        'title',
-        'vacancy',
-        'salary',
-        'category_id',
-        'job_type_id',
-        'location',
-        'description',
-        'keywords',
-        'company_name',
-        'image',
-        'residential_type',
-        'bathrooms'
+ 
+protected $fillable = [
+    'title',
+    'location',
+    'salary',
+    'category_id',
+    'job_type_id',
+    'user_id',
+    'vacancy',
+    'latitude',
+    'longitude',
+    'description',
+    'company_name',
+    'company_location',
+    'image',
+    'residential_type',
+    'bathrooms',
+    'keywords',
+    'experience',
+    'created_at',
+    'updated_at',
 ];
 
     use HasFactory;
